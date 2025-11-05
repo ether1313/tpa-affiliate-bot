@@ -75,7 +75,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton("🟢 View All Certified Platforms 🟢", callback_data="show_all")],
-        [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus 🎁", callback_data="secret_room")]
+        [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus 🎁", callback_data="secret_room")],
+        [InlineKeyboardButton("🌐 TPA Affiliate Network 🌐", url="https://heylink.me/yourpage")] 
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
