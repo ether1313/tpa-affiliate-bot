@@ -31,7 +31,7 @@ GAMES = {
     "Me99": {"url": "https://me99aud.com", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
     "Bybid9": {"url": "https://bybid9.com", "bonus": "💎 Daily First Deposit 30%", "group": "https://t.me/bybid9auvipp"},
     "MrBean9": {"url": "https://mrbean9.com", "bonus": "🚀 Free Credit AUD99.99", "group": "https://t.me/mrbean9Au"},
-    "Queen13": {"url": "https://queen13.net", "bonus": "🎰 New Registration Free AUD113", "group": "https://t.me/queen13aus13"},
+    "Queen13": {"url": "https://queen13.net", "bonus": "🎰 Registration Free AUD113", "group": "https://t.me/queen13aus13"},
     "Gucci9": {"url": "https://gucci9.vip", "bonus": "💵 Free Credit AUD109.99", "group": "https://t.me/guccii_9"},
     "BP77": {"url": "https://bigpay77.net", "bonus": "🔥 Free Credit AUD77.77", "group": "https://t.me/BIGPAY77"},
 }
