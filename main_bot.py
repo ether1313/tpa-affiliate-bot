@@ -1,3 +1,5 @@
+import os
+
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -12,6 +14,8 @@ from telegram.ext import (
 )
 from PIL import Image, ImageOps
 import asyncio
+
+TOKEN = os.getenv("BOT_TOKEN")
 
 # ==============================
 #  所有认证游戏平台 + Telegram 群组
@@ -217,7 +221,7 @@ async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # 主程序入口
 # ==============================
 if __name__ == "__main__":
-    app = ApplicationBuilder().token("7951456244:AAFAtvex5xClqb8wwKvA3AyGdKS0u7YImiM").build()
+    app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(show_all, pattern="^show_all$"))
     app.add_handler(CallbackQueryHandler(secret_room, pattern="^secret_room$"))
