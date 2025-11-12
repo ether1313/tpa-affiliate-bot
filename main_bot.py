@@ -21,18 +21,18 @@ TOKEN = os.getenv("BOT_TOKEN")
 #  所有认证游戏平台 + Telegram 群组
 # ==============================
 GAMES = {
-    "iPay9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
-    "Spongebob13": {"url": "https://spongebob13.net", "bonus": "🔥 Free Credit AUD103.33", "group": "https://t.me/Spongebob13ChannelAus"},
-    "Winnie13": {"url": "https://winnie13.net", "bonus": "💎 Free Credit AUD103.33", "group": "https://t.me/winie13_13"},
-    "Micky13": {"url": "https://www.micky13.net", "bonus": "💰 Daily Bonus AUD9", "group": "https://t.me/micky13_au"},
+    "IPAY9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
+    "SPONGEBOB13": {"url": "https://spongebob13.net", "bonus": "🔥 Free Credit AUD103.33", "group": "https://t.me/Spongebob13ChannelAus"},
+    "WINNIE13": {"url": "https://winnie13.net", "bonus": "💎 Free Credit AUD103.33", "group": "https://t.me/winie13_13"},
+    "MICKY13": {"url": "https://www.micky13.net", "bonus": "💰 Daily Bonus AUD9", "group": "https://t.me/micky13_au"},
     "BK9": {"url": "https://bk9aus.com", "bonus": "⚡️ Daily Easy Step Free AUD100", "group": "https://t.me/bk9aus"},
-    "Rolex9": {"url": "https://rolex9.net", "bonus": "🧧 Free Credit AUD99.99", "group": "https://t.me/rolex9au"},
-    "Kingbet9": {"url": "https://kingbet9aus.com", "bonus": "🌟 Free Credit AUD99.99", "group": "https://t.me/KINGBET9AUD"},
-    "Me99": {"url": "https://me99aud.com", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
-    "Bybid9": {"url": "https://bybid9.com", "bonus": "💎 Daily First Deposit 30%", "group": "https://t.me/bybid9auvipp"},
-    "MrBean9": {"url": "https://mrbean9.com", "bonus": "🚀 Free Credit AUD99.99", "group": "https://t.me/mrbean9Au"},
-    "Queen13": {"url": "https://queen13.net", "bonus": "🎰 Registration Free AUD113", "group": "https://t.me/queen13aus13"},
-    "Gucci9": {"url": "https://gucci9.vip", "bonus": "💵 Free Credit AUD109.99", "group": "https://t.me/guccii_9"},
+    "ROLEX9": {"url": "https://rolex9.net", "bonus": "🧧 Free Credit AUD99.99", "group": "https://t.me/rolex9au"},
+    "KINGBET9": {"url": "https://kingbet9aus.com", "bonus": "🌟 Free Credit AUD99.99", "group": "https://t.me/KINGBET9AUD"},
+    "ME99": {"url": "https://me99aud.com", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
+    "BYBID9": {"url": "https://bybid9.com", "bonus": "💎 Daily First Deposit 30%", "group": "https://t.me/bybid9auvipp"},
+    "MRBEAN9": {"url": "https://mrbean9.com", "bonus": "🚀 Free Credit AUD99.99", "group": "https://t.me/mrbean9Au"},
+    "QUEEN13": {"url": "https://queen13.net", "bonus": "🎰 Registration Free AUD113", "group": "https://t.me/queen13aus13"},
+    "GUCCI9": {"url": "https://gucci9.vip", "bonus": "💵 Free Credit AUD109.99", "group": "https://t.me/guccii_9"},
     "BP77": {"url": "https://bigpay77.net", "bonus": "🔥 Free Credit AUD77.77", "group": "https://t.me/BIGPAY77"},
 }
 
