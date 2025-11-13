@@ -1,28 +1,27 @@
 import os
-import asyncio
 from telegram import (
     Update,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    InputMediaPhoto
+    InputMediaPhoto,
 )
 from telegram.ext import (
-    Application,
+    ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
-    ContextTypes
+    ContextTypes,
 )
 from PIL import Image, ImageOps
 
 # ==============================
-# 载入 Token 与环境变量
+# Environment setup
 # ==============================
 TOKEN = os.getenv("BOT_TOKEN")
-PORT = int(os.environ.get("PORT", "8443"))
-DOMAIN = os.environ.get("RAILWAY_STATIC_URL") or "https://tpa-affiliate-bot.up.railway.app"
+PORT = int(os.getenv("PORT", "8443"))
+DOMAIN = os.getenv("RAILWAY_STATIC_URL") or "https://tpa-affiliate-bot.up.railway.app"
 
 # ==============================
-# 游戏平台与群组
+# Game partners
 # ==============================
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
@@ -42,7 +41,7 @@ GAMES = {
 
 
 # ==============================
-# 自动修正图片比例
+# Image padding helper
 # ==============================
 def pad_image(image_path):
     img = Image.open(image_path)
@@ -52,172 +51,121 @@ def pad_image(image_path):
     if current_ratio < desired_ratio:
         new_w = int(h * desired_ratio)
         padding = (new_w - w) // 2
-        img = ImageOps.expand(img, border=(padding, 0, padding, 0), fill='white')
+        img = ImageOps.expand(img, border=(padding, 0, padding, 0), fill="white")
     elif current_ratio > desired_ratio:
         new_h = int(w / desired_ratio)
         padding = (new_h - h) // 2
-        img = ImageOps.expand(img, border=(0, padding, 0, padding), fill='white')
+        img = ImageOps.expand(img, border=(0, padding, 0, padding), fill="white")
     return img
 
 
 # ==============================
-# /status 状态检测命令
+# /status
 # ==============================
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("✅ Bot is online and webhook is active!")
 
 
 # ==============================
-# Step 1 欢迎页
+# /start welcome
 # ==============================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user
-    name = user.first_name or user.username or "Player"
+    name = update.effective_user.first_name or "Player"
     photo_path = "main_env/images/tpa-authorize-no-bg.png"
 
     caption = (
-        f"G’day! Welcome {name}, \n\n"
+        f"G’day! Welcome {name},\n\n"
         "「✔ ᵛᵉʳᶦᶠᶦᵉᵈ」\n"
-        "You’re now connected with \n"
-        "💎 TPA – Trusted Pokies Australia \n\n"
-        "Licensed 🔰 | Verified ✅ | Integrity 🤝 \n\n"
-        "Tap below to explore certified partners or claim secret bonuses 👇"
+        "💎 TPA – Trusted Pokies Australia\n\n"
+        "Licensed 🔰 | Verified ✅ | Integrity 🤝\n\n"
+        "Tap below to explore certified partners or claim bonuses 👇"
     )
 
     keyboard = [
         [InlineKeyboardButton("🟢 View All Certified Platforms", callback_data="show_all")],
-        [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus", callback_data="secret_room")],
-        [InlineKeyboardButton("🌐 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")]
+        [InlineKeyboardButton("🎁 Get Secret Room Bonus", callback_data="secret_room")],
+        [InlineKeyboardButton("🌐 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")],
     ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
 
     with open(photo_path, "rb") as photo:
         await context.bot.send_photo(
             chat_id=update.effective_chat.id,
             photo=photo,
             caption=caption,
-            reply_markup=reply_markup,
-            parse_mode="Markdown"
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode="Markdown",
         )
-    context.user_data["last_action"] = "home"
 
 
 # ==============================
-# Step 2 显示所有公司
+# Callback: show all partners
 # ==============================
 async def show_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-
-    caption = "Here are all TPA certified partners 👇\n\nTap a brand to see its bonus offer:"
+    caption = "Here are all TPA certified partners 👇"
     buttons = [
         [InlineKeyboardButton(f"{name} — {info['bonus']}", callback_data=f"detail_{name}")]
         for name, info in GAMES.items()
     ]
     buttons.append([InlineKeyboardButton("⬅️ Back", callback_data="go_back")])
-
-    await query.edit_message_caption(caption=caption, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
-    context.user_data["last_action"] = "show_all"
+    await query.edit_message_caption(caption=caption, reply_markup=InlineKeyboardMarkup(buttons))
 
 
 # ==============================
-# Step 3 Secret Room Bonus
+# Callback: secret room
 # ==============================
 async def secret_room(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-
-    caption = "🎁 *Exclusive Secret Room Bonus Links*\n\nJoin the official Telegram groups of our certified partners 👇"
-    buttons = [
-        [InlineKeyboardButton(f"{name} Telegram Group", url=info["group"])]
-        for name, info in GAMES.items()
-    ]
+    caption = "🎁 *Exclusive Secret Room Bonus Links*"
+    buttons = [[InlineKeyboardButton(f"{n} Group", url=i["group"])] for n, i in GAMES.items()]
     buttons.append([InlineKeyboardButton("⬅️ Back", callback_data="go_back")])
-
     await query.edit_message_caption(caption=caption, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
-    context.user_data["last_action"] = "secret_room"
 
 
 # ==============================
-# Step 4 显示公司详情
+# Callback: show detail
 # ==============================
 async def show_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    company_name = query.data.replace("detail_", "")
-    await show_detail_for_company(query, context, company_name)
-
-
-async def show_detail_for_company(query, context, company_name):
-    info = GAMES[company_name]
-    image_path = f"main_env/images/{company_name.lower()}.png"
-
-    caption = (
-        f"🔥 *{company_name}* is one of our verified partners!\n\n"
-        f"Bonus Offer: {info['bonus']}\n\n"
-        "Would you like to try this platform or explore other promotions?"
-    )
-
+    company = query.data.replace("detail_", "")
+    info = GAMES[company]
+    caption = f"🔥 *{company}*\n\nBonus: {info['bonus']}\n\nTry this platform?"
     buttons = [
-        [InlineKeyboardButton(f"✅ Yes, Go to {company_name}", callback_data=f"visit_{company_name}")],
-        [InlineKeyboardButton("🔁 Show other promotions", callback_data="show_all")],
+        [InlineKeyboardButton(f"✅ Yes, Go to {company}", callback_data=f"visit_{company}")],
+        [InlineKeyboardButton("🔁 Back", callback_data="show_all")],
     ]
-
-    try:
-        padded = pad_image(image_path)
-        padded.save("temp_padded.png")
-        with open("temp_padded.png", "rb") as photo:
-            await query.edit_message_media(
-                media=InputMediaPhoto(media=photo, caption=caption, parse_mode="Markdown"),
-                reply_markup=InlineKeyboardMarkup(buttons)
-            )
-    except FileNotFoundError:
-        await query.edit_message_caption(caption=caption, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
-
-    context.user_data["last_action"] = f"detail_{company_name}"
+    await query.edit_message_caption(caption=caption, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(buttons))
 
 
 # ==============================
-# Step 5 跳转官网
+# Callback: visit
 # ==============================
 async def visit_platform(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    company_name = query.data.replace("visit_", "")
-    info = GAMES[company_name]
-    await query.answer(f"Opening {company_name}... 🚀", show_alert=False)
-
-    msg = await query.message.reply_text(
-        f"✅ You’ve accessed via TPA verified link.\nEnjoy your bonus and play safe! 🎯\n\n"
-        f"👉 [Open {company_name}]({info['url']})",
-        parse_mode="Markdown"
+    company = query.data.replace("visit_", "")
+    info = GAMES[company]
+    await query.message.reply_text(
+        f"✅ Verified link opened.\n👉 [Open {company}]({info['url']})",
+        parse_mode="Markdown",
     )
-    context.user_data["last_verified_msg"] = msg.message_id
-    context.user_data["last_action"] = f"visit_{company_name}"
 
 
 # ==============================
-# Step 6 返回上一层
+# Callback: go_back
 # ==============================
 async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    last_action = context.user_data.get("last_action", "home")
-
-    if last_action in ("show_all", "secret_room"):
-        await start(update, context)
-    elif last_action.startswith("detail_"):
-        await show_all(update, context)
-    elif last_action.startswith("visit_"):
-        company_name = last_action.replace("visit_", "")
-        await show_detail_for_company(query, context, company_name)
-    else:
-        await start(update, context)
+    await start(update, context)
 
 
 # ==============================
-# 主程序入口
+# Main Entry
 # ==============================
-async def main():
-    app = Application.builder().token(TOKEN).build()
+if __name__ == "__main__":
+    app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("status", status))
@@ -227,17 +175,14 @@ async def main():
     app.add_handler(CallbackQueryHandler(visit_platform, pattern="^visit_"))
     app.add_handler(CallbackQueryHandler(go_back, pattern="^go_back$"))
 
-    print(f"✅ TPA Affiliate Bot is running with Webhook...")
+    print("✅ TPA Affiliate Bot is running with Webhook...")
     print(f"🌐 Webhook URL: {DOMAIN}/{TOKEN}")
     print(f"📡 Listening on port {PORT}")
 
-    await app.run_webhook(
+    # 🔹 关键差异：不使用 asyncio.run()，直接 run_webhook()
+    app.run_webhook(
         listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
-        webhook_url=f"{DOMAIN}/{TOKEN}"
+        webhook_url=f"{DOMAIN}/{TOKEN}",
     )
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
