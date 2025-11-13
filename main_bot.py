@@ -1,4 +1,5 @@
 import os
+import asyncio
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -6,7 +7,7 @@ from telegram import (
     InputMediaPhoto
 )
 from telegram.ext import (
-    ApplicationBuilder,
+    Application,
     CommandHandler,
     CallbackQueryHandler,
     ContextTypes
@@ -14,14 +15,14 @@ from telegram.ext import (
 from PIL import Image, ImageOps
 
 # ==============================
-#  载入 Token 与环境变量
+# 载入 Token 与环境变量
 # ==============================
 TOKEN = os.getenv("BOT_TOKEN")
-PORT = int(os.environ.get("PORT", 8443))
+PORT = int(os.environ.get("PORT", "8443"))
 DOMAIN = os.environ.get("RAILWAY_STATIC_URL") or "https://tpa-affiliate-bot.up.railway.app"
 
 # ==============================
-# 认证游戏平台 + Telegram 群组
+# 游戏平台与群组
 # ==============================
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
@@ -38,6 +39,7 @@ GAMES = {
     "GUCCI9": {"url": "https://gucci9.vip", "bonus": "💵 Free Credit AUD109.99", "group": "https://t.me/guccii_9"},
     "BP77": {"url": "https://bigpay77.net", "bonus": "🔥 Free Credit AUD77.77", "group": "https://t.me/BIGPAY77"},
 }
+
 
 # ==============================
 # 自动修正图片比例
@@ -62,7 +64,6 @@ def pad_image(image_path):
 # /status 状态检测命令
 # ==============================
 async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """用于检测 webhook 是否连通"""
     await update.message.reply_text("✅ Bot is online and webhook is active!")
 
 
@@ -86,15 +87,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🟢 View All Certified Platforms", callback_data="show_all")],
         [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus", callback_data="secret_room")],
-        [InlineKeyboardButton("🌐 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")] 
+        [InlineKeyboardButton("🌐 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-
-    if update.callback_query:
-        try:
-            await update.callback_query.message.delete()
-        except Exception:
-            pass
 
     with open(photo_path, "rb") as photo:
         await context.bot.send_photo(
@@ -126,7 +121,7 @@ async def show_all(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ==============================
-# Step 3 Secret Room Bonus List
+# Step 3 Secret Room Bonus
 # ==============================
 async def secret_room(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -182,7 +177,7 @@ async def show_detail_for_company(query, context, company_name):
 
 
 # ==============================
-# Step 5 跳转官网 + 自动回复确认
+# Step 5 跳转官网
 # ==============================
 async def visit_platform(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -200,38 +195,29 @@ async def visit_platform(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ==============================
-# Step 6 返回上一层（动态）
+# Step 6 返回上一层
 # ==============================
 async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    last_action = context.user_data.get("last_action")
+    last_action = context.user_data.get("last_action", "home")
 
-    if not last_action or last_action == "home":
+    if last_action in ("show_all", "secret_room"):
         await start(update, context)
-        return
-
-    if last_action == "show_all" or last_action == "secret_room":
-        await start(update, context)
-        context.user_data["last_action"] = "home"
-        return
-
-    if last_action.startswith("detail_"):
+    elif last_action.startswith("detail_"):
         await show_all(update, context)
-        context.user_data["last_action"] = "show_all"
-        return
-
-    if last_action.startswith("visit_"):
+    elif last_action.startswith("visit_"):
         company_name = last_action.replace("visit_", "")
         await show_detail_for_company(query, context, company_name)
-        return
+    else:
+        await start(update, context)
 
 
 # ==============================
-# 主程序入口（Webhook 模式）
+# 主程序入口
 # ==============================
-if __name__ == "__main__":
-    app = ApplicationBuilder().token(TOKEN).build()
+async def main():
+    app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("status", status))
@@ -243,10 +229,15 @@ if __name__ == "__main__":
 
     print(f"✅ TPA Affiliate Bot is running with Webhook...")
     print(f"🌐 Webhook URL: {DOMAIN}/{TOKEN}")
+    print(f"📡 Listening on port {PORT}")
 
-    app.run_webhook(
+    await app.run_webhook(
         listen="0.0.0.0",
         port=PORT,
         url_path=TOKEN,
         webhook_url=f"{DOMAIN}/{TOKEN}"
     )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
