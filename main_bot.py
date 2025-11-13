@@ -1,4 +1,5 @@
 import os
+
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -12,16 +13,12 @@ from telegram.ext import (
     ContextTypes
 )
 from PIL import Image, ImageOps
+import asyncio
 
-# ==============================
-#  载入 Token 与环境变量
-# ==============================
 TOKEN = os.getenv("BOT_TOKEN")
-PORT = int(os.environ.get("PORT", 8443))
-DOMAIN = os.environ.get("RAILWAY_STATIC_URL") or "https://tpa-affiliate-bot.up.railway.app"
 
 # ==============================
-# 认证游戏平台 + Telegram 群组
+#  所有认证游戏平台 + Telegram 群组
 # ==============================
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
@@ -39,8 +36,9 @@ GAMES = {
     "BP77": {"url": "https://bigpay77.net", "bonus": "🔥 Free Credit AUD77.77", "group": "https://t.me/BIGPAY77"},
 }
 
+
 # ==============================
-# 自动修正图片比例
+# 共用函数：自动修正图片比例
 # ==============================
 def pad_image(image_path):
     img = Image.open(image_path)
@@ -56,6 +54,7 @@ def pad_image(image_path):
         padding = (new_h - h) // 2
         img = ImageOps.expand(img, border=(0, padding, 0, padding), fill='white')
     return img
+
 
 # ==============================
 # Step 1 欢迎页
@@ -95,6 +94,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup,
             parse_mode="Markdown"
         )
+
     context.user_data["last_action"] = "home"
 
 
@@ -219,24 +219,15 @@ async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ==============================
-# 主程序入口（Webhook 模式）
+# 主程序入口
 # ==============================
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(show_all, pattern="^show_all$"))
     app.add_handler(CallbackQueryHandler(secret_room, pattern="^secret_room$"))
     app.add_handler(CallbackQueryHandler(show_detail, pattern="^detail_"))
     app.add_handler(CallbackQueryHandler(visit_platform, pattern="^visit_"))
     app.add_handler(CallbackQueryHandler(go_back, pattern="^go_back$"))
-
-    print(f"✅ TPA Affiliate Bot is running with Webhook...")
-    print(f"🌐 Webhook URL: {DOMAIN}/{TOKEN}")
-
-    app.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        url_path=TOKEN,
-        webhook_url=f"{DOMAIN}/{TOKEN}"
-    )
+    print("✅ TPA Affiliate Bot is running...")
+    app.run_polling()
