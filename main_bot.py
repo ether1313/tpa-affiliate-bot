@@ -230,4 +230,5 @@ if __name__ == "__main__":
     app.add_handler(CallbackQueryHandler(visit_platform, pattern="^visit_"))
     app.add_handler(CallbackQueryHandler(go_back, pattern="^go_back$"))
     print("✅ TPA Affiliate Bot is running...")
-    app.run_polling()
+    app.run_polling(close_loop=False)
+
