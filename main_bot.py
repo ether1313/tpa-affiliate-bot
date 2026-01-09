@@ -21,19 +21,18 @@ TOKEN = os.getenv("BOT_TOKEN")
 #  所有认证游戏平台 + Telegram 群组
 # ==============================
 GAMES = {
-    "IPAY9": {"url": "https://ipay9aud.com", "bonus": "🎁 Welcome Bonus 100%", "group": "https://t.me/ipay9aus"},
-    "SPONGEBOB13": {"url": "https://spongebob13.net", "bonus": "🔥 Free Credit AUD103.33", "group": "https://t.me/Spongebob13ChannelAus"},
-    "WINNIE13": {"url": "https://winnie13.net", "bonus": "💎 Free Credit AUD103.33", "group": "https://t.me/winie13_13"},
-    "MICKY13": {"url": "https://www.micky13.net", "bonus": "💰 Daily Bonus AUD9", "group": "https://t.me/micky13_au"},
-    "BK9": {"url": "https://bk9aus.com", "bonus": "⚡️ Daily Easy Step Free AUD100", "group": "https://t.me/bk9aus"},
-    "ROLEX9": {"url": "https://rolex9.net", "bonus": "🧧 Free Credit AUD99.99", "group": "https://t.me/rolex9au"},
-    "KINGBET9": {"url": "https://kingbet9aus.com", "bonus": "🌟 Free Credit AUD99.99", "group": "https://t.me/KINGBET9AUD"},
-    "ME99": {"url": "https://me99aud.com", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
-    "BYBID9": {"url": "https://bybid9.com", "bonus": "💎 Daily First Deposit 30%", "group": "https://t.me/bybid9auvipp"},
-    "MRBEAN9": {"url": "https://mrbean9.com", "bonus": "🚀 Free Credit AUD99.99", "group": "https://t.me/mrbean9Au"},
-    "QUEEN13": {"url": "https://queen13.net", "bonus": "🎰 Registration Free AUD113", "group": "https://t.me/queen13aus13"},
-    "GUCCI9": {"url": "https://gucci9.vip", "bonus": "💵 Free Credit AUD109.99", "group": "https://t.me/guccii_9"},
-    "BP77": {"url": "https://bigpay77.net", "bonus": "🔥 Free Credit AUD77.77", "group": "https://t.me/BIGPAY77"},
+    "IPAY9": {"url": "https://ipay9aud.com/register/SMSRegister", "bonus": "🎁 Daily Easy Step Free $100", "group": "https://t.me/ipay9aus"},
+    "KINGBET9": {"url": "https://www.kingbet9aus.com/register/SMSRegister", "bonus": "🌟 Free Credit $110", "group": "https://t.me/KINGBET9AUD"},
+    "BP77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 Free Credit $187.77", "group": "https://t.me/BIGPAY77"},
+    "ME99": {"url": "https://me99aud.com/register/SMSRegister", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
+    "ROLEX9": {"url": "https://rolex9.net/register/SMSRegister", "bonus": "🧧 Free Credit AUD99.99", "group": "https://t.me/rolex9au"},
+    "GUCCI9": {"url": "https://www.gucci9.live/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
+    "QUEEN13": {"url": "https://www.queen13.net/register/SMSRegister", "bonus": "🎰 New Registration Free $113", "group": "https://t.me/queen13aus13"},
+    "BYBID9": {"url": "https://bybid9.com/register/SMSRegister", "bonus": "💥 Exclusive Grand Jackpot $5088", "group": "https://t.me/bybid9auvipp"},
+    "MICKY13": {"url": "https://www.micky13.com/register/SMSRegister", "bonus": "💰 Free Credit $103.33", "group": "https://t.me/micky13_au"},
+    "WINNIE13": {"url": "https://www.winnie13.net/register/SMSRegister", "bonus": "💎 Free Credit $113.33", "group": "https://t.me/winie13_13"},
+    "MRBEAN9": {"url": "https://www.mrbean9.com/register/SMSRegister", "bonus": "🚀 Register Free $199.99", "group": "https://t.me/mrbean9Au"},
+    "POKEMON13": {"url": "https://pokemon13.com/register", "bonus": "💰 Free Credit $109.99", "group": "https://t.me/pokemon13channel"},
 }
 
 
@@ -76,7 +75,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🟢 View All Certified Platforms", callback_data="show_all")],
         [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus", callback_data="secret_room")],
-        [InlineKeyboardButton("🌐 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")] 
+        [InlineKeyboardButton("🔗 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")],
+        [InlineKeyboardButton("🌐 TPA Official Authority", url="https://www.tpaofficial.com/")] 
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -125,7 +125,7 @@ async def secret_room(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     caption = "🎁 *Exclusive Secret Room Bonus Links*\n\nJoin the official Telegram groups of our certified partners 👇"
     buttons = [
-        [InlineKeyboardButton(f"{name} Telegram Group", url=info["group"])]
+        [InlineKeyboardButton(f"{name} ✈️ Telegram Group", url=info["group"])]
         for name, info in GAMES.items()
     ]
     buttons.append([InlineKeyboardButton("⬅️ Back", callback_data="go_back")])
@@ -182,8 +182,8 @@ async def visit_platform(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer(f"Opening {company_name}... 🚀", show_alert=False)
 
     msg = await query.message.reply_text(
-        f"✅ You’ve accessed via TPA verified link.\nEnjoy your bonus and play safe! 🎯\n\n"
-        f"👉 [Open {company_name}]({info['url']})",
+        f"✅ You’ve accessed via TPA verified link.\n🎰 Enjoy your bonus and play safe! \n\n"
+        f"👉 [Register Now - {company_name}]({info['url']})",
         parse_mode="Markdown"
     )
     context.user_data["last_verified_msg"] = msg.message_id
