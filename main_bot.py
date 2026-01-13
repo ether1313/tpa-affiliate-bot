@@ -22,10 +22,10 @@ TOKEN = os.getenv("BOT_TOKEN")
 # ==============================
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com/register/SMSRegister", "bonus": "🎁 Daily Easy Step Free $100", "group": "https://t.me/ipay9aus"},
-    "KINGBET9": {"url": "https://www.kingbet9aus.com/register/SMSRegister", "bonus": "🌟 Free Credit $110", "group": "https://t.me/KINGBET9AUD"},
-    "BP77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 Free Credit $187.77", "group": "https://t.me/BIGPAY77"},
-    "ME99": {"url": "https://me99aud.com/register/SMSRegister", "bonus": "🎯 New Free 365 Days Bonus", "group": "https://t.me/me99ausgroup"},
-    "ROLEX9": {"url": "https://rolex9.net/register/SMSRegister", "bonus": "🧧 Free Credit AUD99.99", "group": "https://t.me/rolex9au"},
+    "KINGBET9": {"url": "https://www.kingbet9aus.com/register/SMSRegister", "bonus": "🌟 Register Free Credit $110", "group": "https://t.me/KINGBET9AUD"},
+    "BP77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 New Register Free $187.77", "group": "https://t.me/BIGPAY77"},
+    "ME99": {"url": "https://me99aud.com/register/SMSRegister", "bonus": "🎯 Free Credit Bonus $109.99", "group": "https://t.me/me99ausgroup"},
+    "ROLEX9": {"url": "https://rolex9.net/register/SMSRegister", "bonus": "💰 Free Credit $129.99", "group": "https://t.me/rolex9au"},
     "GUCCI9": {"url": "https://www.gucci9.live/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
     "QUEEN13": {"url": "https://www.queen13.net/register/SMSRegister", "bonus": "🎰 New Registration Free $113", "group": "https://t.me/queen13aus13"},
     "BYBID9": {"url": "https://bybid9.com/register/SMSRegister", "bonus": "💥 Exclusive Grand Jackpot $5088", "group": "https://t.me/bybid9auvipp"},
@@ -73,8 +73,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     keyboard = [
-        [InlineKeyboardButton("🟢 View All Certified Platforms", callback_data="show_all")],
-        [InlineKeyboardButton("🎁 Get Limited Secret Room Bonus", callback_data="secret_room")],
+        [InlineKeyboardButton("🟢 View Certified Platforms", callback_data="show_all")],
+        [InlineKeyboardButton("🎁 Limited Secret Room Bonus", callback_data="secret_room")],
         [InlineKeyboardButton("🔗 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")],
         [InlineKeyboardButton("🌐 TPA Official Authority", url="https://www.tpaofficial.com/")] 
     ]
