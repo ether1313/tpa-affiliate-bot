@@ -23,7 +23,7 @@ TOKEN = os.getenv("BOT_TOKEN")
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com/register/SMSRegister", "bonus": "🎁 Daily Easy Step Free $100", "group": "https://t.me/ipay9aus"},
     "KINGBET9": {"url": "https://www.kingbet9aus.com/register/SMSRegister", "bonus": "🌟 Register Free Credit $110", "group": "https://t.me/KINGBET9AUD"},
-    "BP77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 New Register Free $187.77", "group": "https://t.me/BIGPAY77"},
+    "BIGPAY77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 New Register Free $187.77", "group": "https://t.me/BIGPAY77"},
     "ME99": {"url": "https://me99aud.com/register/SMSRegister", "bonus": "🎯 Free Credit Bonus $109.99", "group": "https://t.me/me99ausgroup"},
     "ROLEX9": {"url": "https://rolex9.net/register/SMSRegister", "bonus": "💰 Free Credit $129.99", "group": "https://t.me/rolex9au"},
     "GUCCI9": {"url": "https://www.gucci9.live/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
