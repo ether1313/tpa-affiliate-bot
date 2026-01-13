@@ -29,8 +29,8 @@ GAMES = {
     "GUCCI9": {"url": "https://www.gucci9.live/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
     "QUEEN13": {"url": "https://www.queen13.net/register/SMSRegister", "bonus": "🎰 New Registration Free $113", "group": "https://t.me/queen13aus13"},
     "BYBID9": {"url": "https://bybid9.com/register/SMSRegister", "bonus": "💥 Exclusive Grand Jackpot $5088", "group": "https://t.me/bybid9auvipp"},
-    "MICKY13": {"url": "https://www.micky13.com/register/SMSRegister", "bonus": "💰 Free Credit $103.33", "group": "https://t.me/micky13_au"},
-    "WINNIE13": {"url": "https://www.winnie13.net/register/SMSRegister", "bonus": "💎 Free Credit $113.33", "group": "https://t.me/winie13_13"},
+    "MICKY9": {"url": "https://www.micky13.com/register/SMSRegister", "bonus": "💰 Free Credit $103.33", "group": "https://t.me/micky13_au"},
+    "WINNIE777": {"url": "https://www.winnie13.net/register/SMSRegister", "bonus": "💎 Free Credit $113.33", "group": "https://t.me/winie13_13"},
     "MRBEAN9": {"url": "https://www.mrbean9.com/register/SMSRegister", "bonus": "🚀 Register Free $199.99", "group": "https://t.me/mrbean9Au"},
     "POKEMON13": {"url": "https://pokemon13.com/register", "bonus": "💰 Free Credit $109.99", "group": "https://t.me/pokemon13channel"},
 }
