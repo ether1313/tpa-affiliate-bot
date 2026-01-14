@@ -61,7 +61,7 @@ def pad_image(image_path):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     name = user.first_name or user.username or "Player"
-    photo_path = "main_env/images/tpa-authorize-no-bg.png"
+    photo_path = "main_env/images/tpa-authorize.png"
 
     caption = (
         f"G’day! Welcome {name}, \n\n"
@@ -75,8 +75,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🟢 View Certified Platforms", callback_data="show_all")],
         [InlineKeyboardButton("🎁 Limited Secret Room Bonus", callback_data="secret_room")],
-        [InlineKeyboardButton("🔗 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/")],
-        [InlineKeyboardButton("🌐 TPA Official Authority", url="https://www.tpaofficial.com/")] 
+        [
+            InlineKeyboardButton("🔗 TPA Affiliate Network", url="https://heylink.me/tpaaustralia/"),
+            InlineKeyboardButton("🌐 TPA Official Authority", url="https://www.tpaofficial.com/")
+        ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
