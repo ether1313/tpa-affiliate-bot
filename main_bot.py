@@ -1,5 +1,6 @@
 import os
-
+import sqlite3
+from datetime import datetime
 from telegram import (
     Update,
     InlineKeyboardButton,
@@ -13,9 +14,37 @@ from telegram.ext import (
     ContextTypes
 )
 from PIL import Image, ImageOps
-import asyncio
 
 TOKEN = os.getenv("BOT_TOKEN")
+
+# ==============================
+# 用户统计数据库（fly.io volume）
+# ==============================
+DB_PATH = "/data/users.db"
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+cur = conn.cursor()
+cur.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY,
+    username TEXT,
+    first_name TEXT,
+    last_name TEXT,
+    first_seen TEXT,
+    last_seen TEXT
+)
+""")
+conn.commit()
+
+def save_user(user):
+    now = datetime.utcnow().isoformat()
+    cur.execute("SELECT user_id FROM users WHERE user_id=?", (user.id,))
+    exists = cur.fetchone()
+    if exists:
+        cur.execute("UPDATE users SET last_seen=? WHERE user_id=?", (now, user.id))
+    else:
+        cur.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)",
+                    (user.id, user.username, user.first_name, user.last_name, now, now))
+    conn.commit()
 
 # ==============================
 #  所有认证游戏平台 + Telegram 群组
@@ -34,7 +63,6 @@ GAMES = {
     "MRBEAN9": {"url": "https://www.mrbean9.com/register/SMSRegister", "bonus": "🚀 Register Free $199.99", "group": "https://t.me/mrbean9Au"},
     "POKEMON13": {"url": "https://pokemon13.com/register", "bonus": "💰 Free Credit $109.99", "group": "https://t.me/pokemon13channel"},
 }
-
 
 # ==============================
 # 共用函数：自动修正图片比例
@@ -60,6 +88,7 @@ def pad_image(image_path):
 # ==============================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
+    save_user(user)
     name = user.first_name or user.username or "Player"
     photo_path = "main_env/images/tpa-authorize.png"
 
@@ -98,6 +127,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     context.user_data["last_action"] = "home"
+
+
+# ==============================
+# /stats 查看用户数
+# ==============================
+async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    cur.execute("SELECT COUNT(*) FROM users")
+    total = cur.fetchone()[0]
+    await update.message.reply_text(f"📊 Total users started bot: {total}")
 
 
 # ==============================
@@ -226,6 +264,7 @@ async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("stats", stats))
     app.add_handler(CallbackQueryHandler(show_all, pattern="^show_all$"))
     app.add_handler(CallbackQueryHandler(secret_room, pattern="^secret_room$"))
     app.add_handler(CallbackQueryHandler(show_detail, pattern="^detail_"))
