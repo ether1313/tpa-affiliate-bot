@@ -52,16 +52,16 @@ def save_user(user):
 GAMES = {
     "IPAY9": {"url": "https://ipay9aud.com/register/SMSRegister", "bonus": "🎁 Daily Easy Step Free $100", "group": "https://t.me/ipay9aus"},
     "KINGBET9": {"url": "https://www.kingbet9aus.com/register/SMSRegister", "bonus": "🌟 Register Free Credit $110", "group": "https://t.me/KINGBET9AUD"},
-    "BIGPAY77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 New Register Free $187.77", "group": "https://t.me/BIGPAY77"},
+    "BP77": {"url": "https://bigpay77.net/register/SMSRegister", "bonus": "🔥 New Register Free $187.77", "group": "https://t.me/BIGPAY77"},
     "ME99": {"url": "https://me99aud.com/register/SMSRegister", "bonus": "🎯 Free Credit Bonus $109.99", "group": "https://t.me/me99ausgroup"},
     "ROLEX9": {"url": "https://rolex9.net/register/SMSRegister", "bonus": "💰 Free Credit $129.99", "group": "https://t.me/rolex9au"},
-    "GUCCI9": {"url": "https://www.gucci9.live/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
+    "GUCCI9": {"url": "https://gucci9au.net/register/SMSRegister", "bonus": "💵 Daily Easy Bonus $100", "group": "https://t.me/guccii_9"},
     "QUEEN13": {"url": "https://www.queen13.net/register/SMSRegister", "bonus": "🎰 New Registration Free $113", "group": "https://t.me/queen13aus13"},
     "BYBID9": {"url": "https://bybid9.com/register/SMSRegister", "bonus": "💥 Exclusive Grand Jackpot $5088", "group": "https://t.me/bybid9auvipp"},
-    "MICKY9": {"url": "https://www.micky13.com/register/SMSRegister", "bonus": "💰 Free Credit $103.33", "group": "https://t.me/micky13_au"},
+    "MICKY9": {"url": "https://micky13.net/register/SMSRegister", "bonus": "💰 Free Credit $103.33", "group": "https://t.me/micky13_au"},
     "WINNIE777": {"url": "https://www.winnie13.net/register/SMSRegister", "bonus": "💎 Free Credit $113.33", "group": "https://t.me/winie13_13"},
     "MRBEAN9": {"url": "https://www.mrbean9.com/register/SMSRegister", "bonus": "🚀 Register Free $199.99", "group": "https://t.me/mrbean9Au"},
-    "POKEMON13": {"url": "https://pokemon13.com/register", "bonus": "💰 Free Credit $109.99", "group": "https://t.me/pokemon13channel"},
+    "POKEMON9": {"url": "https://pokemon9.com/register/SMSRegister", "bonus": "💰 Free Credit $109.99", "group": "https://t.me/pokemon13channel"},
 }
 
 # ==============================
@@ -185,7 +185,7 @@ async def show_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def show_detail_for_company(query, context, company_name):
     info = GAMES[company_name]
-    image_path = f"main_env/images/{company_name.lower()}.png"
+    image_path = "main_env/images/tpa-authorize.png"
 
     caption = (
         f"🔥 *{company_name}* is one of our verified partners!\n\n"
@@ -199,9 +199,7 @@ async def show_detail_for_company(query, context, company_name):
     ]
 
     try:
-        padded = pad_image(image_path)
-        padded.save("temp_padded.png")
-        with open("temp_padded.png", "rb") as photo:
+        with open(image_path, "rb") as photo:
             await query.edit_message_media(
                 media=InputMediaPhoto(media=photo, caption=caption, parse_mode="Markdown"),
                 reply_markup=InlineKeyboardMarkup(buttons)
